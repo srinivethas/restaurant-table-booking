@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Restaurant Table Booking System</title>
+
+<style>
+    body {
+        font-family: Arial;
+        margin: 0;
+        background: #EAF1FF;
+    }
+
+    header {
+        background: url("https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg");
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 70px 20px;
+        text-align: center;
+        font-size: 45px;
+        font-weight: bold;
+        text-shadow: 3px 3px 8px #000;
+    }
+
+    nav {
+        background: #133B8A;
+        padding: 12px;
+        text-align: center;
+    }
+
+    nav button {
+        background: #1669D8;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin: 5px;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    nav button:hover {
+        background: #0A1D56;
+    }
+
+    .page {
+        display: none;
+        padding: 20px;
+    }
+
+    .active {
+        display: block;
+    }
+
+    .home-box {
+        background: #ffffff;
+        padding: 30px;
+        width: 85%;
+        margin: auto;
+        border-radius: 15px;
+        box-shadow: 0 0 12px rgba(19, 59, 138, 0.25);
+    }
+
+    input, select {
+        width: 90%;
+        padding: 12px;
+        margin: 5px;
+        border-radius: 5px;
+        border: 1px solid #1669D8;
+    }
+
+    .btn {
+        background: #133B8A;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: 0.2s;
+    }
+
+    .btn:hover {
+        background: #0A1D56;
+    }
+
+    .table-box {
+        padding: 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0 12px rgba(19, 59, 138, 0.25);
+        width: 80%;
+        margin: auto;
+    }
+
+    .error {
+        color: #d62828;
+        font-size: 14px;
+    }
+
+    .food-gallery {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+
+    /* Reduced size */
+    .food-gallery img {
+        width: 22%;
+        height: 160px;
+        object-fit: cover;
+        border-radius: 15px;
+        box-shadow: 0 0 12px rgba(0,0,0,0.2);
+        margin-bottom: 20px;
+        transition: 0.3s;
+    }
+
+    .food-gallery img:hover {
+      transform: scale(1.1);
+    }
+
+    footer {
+        background: #0A1D56;
+        color: white;
+        padding: 12px;
+        text-align: center;
+        margin-top: 40px;
+    }
+</style>
+</head>
+
+<body>
+
+<header>Heavenly Knights Restaurant</header>
+
+<nav>
+    <button onclick="showPage('home')">Home</button>
+    <button onclick="showPage('login')">Login</button>
+    <button onclick="goToBooking()">Booking</button>
+    <button onclick="showPage('viewBooking')">View Booking</button>
+</nav>
+
+
+<div id="home" class="page active">
+    <div class="home-box">
+        <h2>🍽 Welcome to Heavenly Knights Restaurant</h2>
+
+        <img src="https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg"
+             style="width:50%; border-radius:15px; margin-bottom:20px;">
+
+        <p style="font-size:18px; line-height:1.6;">
+            Heavenly Knights Restaurant is a premium multi-cuisine fine dining destination
+            located in Coimbatore. We offer exceptional food, beautiful ambience, and an
+            unforgettable dining experience.
+        </p>
+
+        <h3>⭐ Highlights</h3>
+        <ul style="font-size:18px;">
+            <li>Luxury family dining</li>
+            <li>Air-conditioned spacious halls</li>
+            <li>Multi-cuisine dishes</li>
+            <li>Online table booking system</li>
+            <li>Top professional chefs</li>
+        </ul>
+
+        <h3>🍕 Our Delicious Food Gallery</h3>
+
+        <div class="food-gallery">
+            <img src="https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg">
+            <img src="https://images.pexels.com/photos/315755/pexels-photo-315755.jpeg">
+        </div>
+
+        <h3> Restaurant Rating</h3>
+        <div id="ratingBox" style="
+            background:#f5f8ff;
+            padding:15px;
+            border-radius:10px;
+            font-size:18px;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+        ">
+            Loading rating...
+        </div>
+
+        <center><button class="btn" onclick="showPage('login')">Login & Book Table →</button></center>
+    </div>
+</div>
+
+
+<div id="login" class="page">
+    <h2>Login</h2>
+
+    <img src="https://cdn-icons-png.flaticon.com/512/295/295128.png" width="120">
+
+    <input id="loginUser" type="text" placeholder="Enter Username">
+    <input id="loginPass" type="password" placeholder="Enter Password">
+
+    <button class="btn" onclick="simpleLogin()">Login</button>
+    <p id="loginMsg"></p>
+</div>
+
+
+<div id="booking" class="page">
+    <h2>Book Your Table</h2>
+
+    <img src="https://images.pexels.com/photos/6267/menu-restaurant-vintage-table.jpg"
+         style="width:40%; border-radius:15px; margin-bottom:15px;">
+
+    <h3>Select Table Type</h3>
+    <select id="tableType">
+        <option value="Single (1 Person)">Single (1 Person)</option>
+        <option value="Couple (2 People)">Couple (2 People)</option>
+        <option value="Friends (4 People)">Friends (4 People)</option>
+        <option value="Family (6 People)">Family (6 People)</option>
+        <option value="Party (10+ People)">Party (10+ People)</option>
+    </select>
+
+    <h3>Select Date & Time</h3>
+    <input id="date" type="date">
+    <p id="errDate" class="error"></p>
+
+    <select id="time">
+        <option>12:00 PM</option>
+        <option>1:00 PM</option>
+        <option>2:00 PM</option>
+        <option>7:00 PM</option>
+        <option>8:00 PM</option>
+    </select>
+
+    <button class="btn" onclick="checkAvailability()">Check Availability</button>
+    <p id="availabilityMsg" style="font-size:18px; font-weight:bold;"></p>
+
+    <h3>Your Details</h3>
+
+    <input id="custName" type="text" placeholder="Your Name">
+    <p id="errName" class="error"></p>
+
+    <input id="custMembers" type="number" placeholder="Number of People">
+    <p id="errMembers" class="error"></p>
+
+    <input id="custPhone" type="text" placeholder="Phone Number (10 digits)">
+    <p id="errPhone" class="error"></p>
+
+    <button class="btn" onclick="submitBooking()">Submit Booking</button>
+</div>
+
+
+<div id="viewBooking" class="page">
+    <h2>Your Booking Details</h2>
+
+    <div id="bookingDetails" class="table-box"></div>
+
+    <h3>📍 Restaurant Location</h3>
+
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.4720646909686!2d76.98277809999999!3d11.003164700000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba859417d33e9f5%3A0x6b9767ca11bb058b!2sHeavenly%20Knights!5e0!3m2!1sen!2sin!4v1763322055332!5m2!1sen!2sin" 
+        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy">
+    </iframe>
+</div>
+
+<footer>© 2025 Heavenly Knights Restaurant</footer>
+
+<script>
+
+function loadRating() {
+    fetch("https://dummyjson.com/recipes/1")
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById("ratingBox").innerHTML = `
+            <b>Rating:</b> ⭐ ${data.rating} / 5 <br>
+            <b>Reviews:</b> ${data.reviewCount}+ people <br>
+            <b>Top Reviewer:</b> ${data.userId}
+        `;
+    })
+    .catch(error => {
+        document.getElementById("ratingBox").innerHTML = "Unable to load rating.";
+    });
+}
+
+loadRating();
+
+function showPage(page) {
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    document.getElementById(page).classList.add("active");
+}
+
+function simpleLogin() {
+    if (loginUser.value === "" || loginPass.value === "") {
+        loginMsg.style.color = "red";
+        loginMsg.innerHTML = "Please fill all fields!";
+        return;
+    }
+
+    loginMsg.style.color = "green";
+    loginMsg.innerHTML = "Login Successful!";
+    setTimeout(() => showPage("booking"), 700);
+}
+
+function goToBooking() {
+    alert("Please login first.");
+    showPage("login");
+}
+
+function checkAvailability() {
+    availabilityMsg.innerHTML = "";
+
+    if (date.value === "") {
+        errDate.innerHTML = "Select date!";
+        return;
+    }
+
+    let available = Math.random() > 0.3;
+
+    availabilityMsg.style.color = available ? "green" : "red";
+    availabilityMsg.innerHTML = available ? "✔ Table Available!" : "❌ No tables available.";
+}
+
+function submitBooking() {
+
+    document.querySelectorAll(".error").forEach(e => e.innerHTML = "");
+
+    let name = custName.value;
+    let members = custMembers.value;
+    let dateV = date.value;
+    let phone = custPhone.value;
+
+    let valid = true;
+
+    if (name.trim() === "") {
+        errName.innerHTML = "Name is required!";
+        valid = false;
+    }
+
+    if (members === "" || members <= 0) {
+        errMembers.innerHTML = "Enter valid number!";
+        valid = false;
+    }
+
+    if (dateV === "") {
+        errDate.innerHTML = "Select date!";
+        valid = false;
+    }
+
+    if (phone.length !== 10 || isNaN(phone)) {
+        errPhone.innerHTML = "Phone must be exactly 10 digits!";
+        valid = false;
+    }
+
+    if (!valid) return;
+
+    let tableTypeValue = tableType.value;
+    let time = document.getElementById("time").value;
+
+    let waiters = ["Arun", "Kishore", "Deepak", "Ravi", "Manoj"];
+    let waiter = waiters[Math.floor(Math.random() * waiters.length)];
+
+    let details = `
+        <b>Name:</b> ${name}<br>
+        <b>Phone:</b> ${phone}<br>
+        <b>Table Type:</b> ${tableTypeValue}<br>
+        <b>Members:</b> ${members}<br>
+        <b>Date:</b> ${dateV}<br>
+        <b>Time:</b> ${time}<br>
+        <b>Assigned Waiter:</b> ${waiter}<br>
+    `;
+
+    document.getElementById("bookingDetails").innerHTML = details;
+
+    showPage("viewBooking");
+}
+
+</script>
+
+</body>
+</html>
